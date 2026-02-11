@@ -1,75 +1,79 @@
 import { useState, useEffect } from "react";
 
 export default function Page() {
+  const [solvedTiles, setSolvedTiles] = useState([]);
   const [isSolved, setIsSolved] = useState(false);
-  const [tiles, setTiles] = useState([]);
   const [yesPressed, setYesPressed] = useState(false);
+  const [nextExpected, setNextExpected] = useState(1);
 
-  // Initialisiere das Puzzle beim Start
-  useEffect(() => {
-    const initialTiles = Array.from({ length: 9 }, (_, i) => i + 1);
-    // Mische die Kacheln zufällig, aber die 9 (Lücke) bleibt am Ende
-    const shuffled = [...initialTiles.slice(0, 8).sort(() => Math.random() - 0.5), 9];
-    setTiles(shuffled);
-  }, []);
+  // Die Teile werden hier einmalig gemischt angezeigt
+  const [displayOrder] = useState([5, 3, 8, 1, 9, 4, 7, 2, 6]);
 
-  const handleTileClick = (index) => {
-    const emptyIndex = tiles.indexOf(9);
-    const validMoves = [index - 1, index + 1, index - 3, index + 3];
-
-    if (validMoves.includes(emptyIndex)) {
-      const newTiles = [...tiles];
-      [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
-      setTiles(newTiles);
-
-      // Prüfen, ob gelöst (1 bis 9 in richtiger Reihenfolge)
-      if (newTiles.every((tile, i) => tile === i + 1)) {
-        setIsSolved(true);
+  const handleTileClick = (tileNum) => {
+    if (tileNum === nextExpected) {
+      setSolvedTiles([...solvedTiles, tileNum]);
+      setNextExpected(nextExpected + 1);
+      
+      if (tileNum === 9) {
+        setTimeout(() => setIsSolved(true), 500);
       }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-pink-100 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-pink-100 p-4 font-sans text-center">
       {!isSolved ? (
-        <>
-          <h1 className="text-2xl font-bold mb-4 text-pink-600 font-serif">Löse das Puzzle für deine Überraschung!</h1>
-          <div className="grid grid-cols-3 gap-2 w-72 h-72 bg-white p-2 rounded-lg shadow-xl">
-            {tiles.map((tile, index) => (
+        <div className="max-w-md w-full">
+          <h1 className="text-2xl font-bold mb-2 text-pink-600">Klick die Teile in der richtigen Reihenfolge an!</h1>
+          <p className="mb-6 text-pink-400 text-sm">Finde Teil {nextExpected} von 9</p>
+          
+          <div className="grid grid-cols-3 gap-3 w-80 h-80 mx-auto bg-white p-4 rounded-3xl shadow-2xl">
+            {displayOrder.map((tile) => (
               <div
-                key={index}
-                onClick={() => handleTileClick(index)}
-                className={`w-20 h-20 border border-pink-200 cursor-pointer rounded-sm ${tile === 9 ? 'bg-pink-50' : ''}`}
-                style={tile !== 9 ? {
+                key={tile}
+                onClick={() => handleTileClick(tile)}
+                className={`w-20 h-20 rounded-lg cursor-pointer transition-all duration-300 transform active:scale-90 border-2 
+                  ${solvedTiles.includes(tile) ? 'opacity-30 border-green-300 grayscale' : 'border-pink-200 shadow-sm hover:scale-105'}
+                `}
+                style={{
                   backgroundImage: `url(/valentine/tile-${tile}.png)`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center'
-                } : {}}
-              />
+                }}
+              >
+                {!solvedTiles.includes(tile) && (
+                  <div className="w-full h-full flex items-center justify-center bg-black bg-opacity-10 text-white font-bold rounded-lg">
+                    {/* Optional: Hier könnte man die Zahl einblenden, wenn es zu schwer ist */}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
-          <p className="mt-4 text-pink-400 text-sm italic">Tippe auf ein Teil neben der Lücke, um es zu verschieben.</p>
-        </>
+        </div>
       ) : !yesPressed ? (
-        <div className="text-center animate-fadeIn">
-          <img src="/valentine/full-image.png" className="w-80 rounded-lg shadow-2xl mb-6 mx-auto border-4 border-white" />
-          <h1 className="text-4xl font-bold text-pink-600 mb-8">Will you be my Valentine?</h1>
-          <div className="flex gap-4 justify-center">
+        <div className="animate-in zoom-in duration-500">
+          <img src="/valentine/full-image.png" className="w-80 rounded-2xl shadow-2xl mb-8 mx-auto border-8 border-white" />
+          <h1 className="text-4xl font-bold text-pink-600 mb-10">Will you be my Valentine?</h1>
+          <div className="flex gap-6 justify-center">
              <button 
-                className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-bold transform transition hover:scale-110 shadow-lg"
+                className="bg-green-500 hover:bg-green-600 text-white px-10 py-4 rounded-full font-bold transition-all hover:scale-110 shadow-lg"
                 onClick={() => setYesPressed(true)}
              >
                Yes ❤️
              </button>
-             <button className="bg-red-400 text-white px-8 py-3 rounded-full font-bold opacity-50 cursor-not-allowed">
+             <button 
+                className="bg-red-400 text-white px-8 py-4 rounded-full font-bold opacity-60"
+                onClick={() => alert("Klick lieber auf JA! 😉")}
+             >
                No
              </button>
           </div>
         </div>
       ) : (
-        <div className="text-center">
-          <h1 className="text-5xl font-bold text-pink-600 animate-bounce">Yay! I love you! ❤️</h1>
-          <p className="mt-4 text-xl text-pink-500">Ich freue mich riesig!</p>
+        <div className="animate-in bounce-in duration-1000">
+          <h1 className="text-6xl mb-4">💖</h1>
+          <h1 className="text-4xl font-extrabold text-pink-600">Yay! I love you! ❤️</h1>
+          <p className="mt-4 text-xl text-pink-400 italic">Ich freue mich riesig auf uns!</p>
         </div>
       )}
     </div>
