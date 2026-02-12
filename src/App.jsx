@@ -66,7 +66,7 @@ export default function Page() {
              <div className="absolute -bottom-4 -left-4 text-4xl">💖</div>
           </div>
           <h1 className="text-4xl font-extrabold text-pink-600 mb-8 leading-tight">
-            Geschafft! 🥰 <br/> ❤️ <br/> Will you be my Valentine?
+            Du hast Geschafft mein Herz! ❤️ <br/> Will you be my Valentine?
           </h1>
           <div className="flex gap-6 justify-center">
              <button 
@@ -79,7 +79,7 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center animate-in fade-in zoom-in duration-1000">
-          <div className="text-7xl mb-6 animate-bounce">🥰❤️</div>
+          <div className="text-7xl mb-6 animate">🥰❤️</div>
           <h1 className="text-5xl font-black text-red-600 drop-shadow-lg mb-4">
             Yay! 
           </h1>
