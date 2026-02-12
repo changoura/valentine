@@ -107,7 +107,7 @@ export default function Page() {
               <div className="text-5xl mb-4 animate-bounce text-center">🥰</div>
               <h1 className="text-4xl font-black text-red-600 mb-4 text-center">YAY!</h1>
               <div className="space-y-4 font-serif italic text-pink-700 text-center">
-                <p className="text-2xl border-b border-pink-100 pb-2">Ich liebe dich,</p>
+                <p className="text-2xl border-b border-pink-100 pb-2">Ich liebe dich </p>
                 <p className="text-4xl font-bold text-red-500 tracking-tighter">YAREN ❤️</p>
                 <p className="text-lg pt-4 border-t border-pink-100 text-center uppercase text-sm font-sans font-bold">Mein Lieblingsmensch! ✨</p>
               </div>
