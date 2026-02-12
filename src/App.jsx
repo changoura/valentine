@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Confetti from "react-confetti"; // Das sorgt für den Herzregen
 
 export default function Page() {
   const [cards, setCards] = useState([]);
@@ -7,14 +6,6 @@ export default function Page() {
   const [solved, setSolved] = useState([]);
   const [isGameFinished, setIsGameFinished] = useState(false);
   const [yesPressed, setYesPressed] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-
-  // Update Fenstergröße für das Konfetti
-  useEffect(() => {
-    const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     const pairImages = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -45,25 +36,23 @@ export default function Page() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-pink-50 p-4 font-sans text-center overflow-hidden relative">
       
-      {/* Herz-Konfetti erscheint nur, wenn Yes gedrückt wurde */}
+      {/* Selbstgebauter Herzregen (ohne extra Paket) */}
       {yesPressed && (
-        <Confetti
-          width={windowSize.width}
-          height={windowSize.height}
-          numberOfPieces={150}
-          recycle={true}
-          colors={['#ff69b4', '#ff1493', '#ff0000', '#ffffff']}
-          drawShape={ctx => {
-            ctx.beginPath();
-            for (let i = 0; i < 30; i++) {
-              const angle = 0.1 * i;
-              const x = 10 * Math.pow(Math.sin(angle), 3);
-              const y = - (13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
-              ctx.lineTo(x, y);
-            }
-            ctx.fill();
-          }}
-        />
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-2xl animate-fall"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 3}s`
+              }}
+            >
+              ❤️
+            </div>
+          ))}
+        </div>
       )}
 
       {!isGameFinished ? (
@@ -86,7 +75,7 @@ export default function Page() {
                 }}
               >
                 {!(flipped.includes(index) || solved.includes(index)) && (
-                   <div className="w-full h-full flex items-center justify-center text-2xl">🎁</div>
+                   <div className="w-full h-full flex items-center justify-center text-2xl opacity-40">🎁</div>
                 )}
               </div>
             ))}
@@ -107,21 +96,20 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center z-50">
-          {/* Umschlag-Animation */}
           <div className="relative w-80 h-96 flex items-end justify-center">
-            {/* Umschlag Körper */}
+            {/* Umschlag */}
             <div className="absolute bottom-0 w-full h-48 bg-red-500 rounded-b-2xl shadow-2xl z-20">
               <div className="absolute top-0 left-0 w-full h-full border-l-[160px] border-l-red-600 border-r-[160px] border-r-red-600 border-t-[100px] border-t-transparent"></div>
             </div>
 
-            {/* Der Brief, der langsam hochkommt */}
-            <div className="bg-white w-[90%] p-8 rounded-sm shadow-sm animate-letter-up mb-10 z-10 border-t-8 border-pink-400">
-              <div className="text-5xl mb-4 animate-bounce">🥰</div>
-              <h1 className="text-4xl font-black text-red-600 mb-4">YAY!</h1>
-              <div className="space-y-4 font-serif italic text-pink-700">
+            {/* Der Brief */}
+            <div className="bg-white w-[95%] p-8 rounded-sm shadow-sm animate-letter-up mb-10 z-10 border-t-8 border-pink-400">
+              <div className="text-5xl mb-4 animate-bounce text-center">🥰</div>
+              <h1 className="text-4xl font-black text-red-600 mb-4 text-center">YAY!</h1>
+              <div className="space-y-4 font-serif italic text-pink-700 text-center">
                 <p className="text-2xl border-b border-pink-100 pb-2">Ich liebe dich,</p>
                 <p className="text-4xl font-bold text-red-500 tracking-tighter">YAREN ❤️</p>
-                <p className="text-lg pt-4 border-t border-pink-100">Du bist das Beste, was mir je passiert ist. ✨</p>
+                <p className="text-lg pt-4 border-t border-pink-100 text-center uppercase text-sm font-sans font-bold">Mein Lieblingsmensch! ✨</p>
               </div>
               <div className="mt-6 flex justify-center gap-4 text-3xl">
                 <span>🌹</span><span>💍</span><span>🌹</span>
@@ -133,11 +121,18 @@ export default function Page() {
 
       <style jsx>{`
         @keyframes letter-up {
-          0% { transform: translateY(150px); opacity: 0; }
-          100% { transform: translateY(-50px); opacity: 1; }
+          0% { transform: translateY(200px); opacity: 0; }
+          100% { transform: translateY(-60px); opacity: 1; }
+        }
+        @keyframes fall {
+          0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
         .animate-letter-up {
-          animation: letter-up 2.5s ease-out forwards;
+          animation: letter-up 3s ease-out forwards;
+        }
+        .animate-fall {
+          animation: fall linear infinite;
         }
       `}</style>
     </div>
