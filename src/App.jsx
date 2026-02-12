@@ -79,7 +79,7 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center animate-in fade-in zoom-in duration-1000">
-          <div className="text-7xl mb-6 animate">🥰❤️</div>
+          <div className="text-7xl mb-6 animate"> </div>
           <h1 className="text-5xl font-black text-red-600 drop-shadow-lg mb-4">
             Yay! 
           </h1>
