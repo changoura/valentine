@@ -65,7 +65,7 @@ export default function Page() {
       ) : !yesPressed ? (
         <div className="animate-in zoom-in duration-500">
           <img src="/valentine/full-image.png" className="w-80 rounded-2xl shadow-2xl mb-8 mx-auto border-8 border-white" />
-          <h1 className="text-4xl font-bold text-pink-600 mb-10">Du hast es geschafft! ❤️<br/>Will you be my Valentine?</h1>
+          <h1 className="text-4xl font-bold text-pink-600 mb-10">Du hast es geschafft mein Herz! ❤️<br/>Will you be my Valentine ?</h1>
           <div className="flex gap-6 justify-center">
              <button className="bg-green-500 text-white px-10 py-4 rounded-full font-bold shadow-lg" onClick={() => setYesPressed(true)}>Yes ❤️</button>
              <button className="bg-red-400 text-white px-8 py-4 rounded-full font-bold opacity-60" onClick={() => alert("Och nööö, klick auf JA! 😉")}>No</button>
@@ -74,7 +74,7 @@ export default function Page() {
       ) : (
         <div className="animate-in bounce-in duration-1000">
           <h1 className="text-6xl mb-4">🥰</h1>
-          <h1 className="text-4xl font-extrabold text-pink-600">Yay! Ich liebe dich! ❤️</h1>
+          <h1 className="text-4xl font-extrabold text-pink-600">Yay! Ich liebe dich Yaren! ❤️</h1>
         </div>
       )}
     </div>
